@@ -3,5 +3,4 @@ Repository for Thomas Davidson, Dana Warmsley, Michael Macy, and Ingmar Weber. 2
 
 COMING SOON!
 
-***A subset of our labelled data were released by CrowdFlower. You can download the
-data [here](https://www.crowdflower.com/wp-content/uploads/2016/03/twitter-hate-speech-classifier-DFE-a845520.csv). Please cite our paper if you are using these data in your research.***
+***If you are interested in using our data then please fill out this [form](https://docs.google.com/forms/d/e/1FAIpQLSdrPNlfVBlqxun2tivzAtsZaOoPC5YYMocn-xscCgeRakLXHg/viewform?usp=pp_url&entry.1506871634&entry.147453066&entry.1390333885&entry.516829772) and we will get back to you soon.***
