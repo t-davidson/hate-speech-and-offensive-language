@@ -1,4 +1,4 @@
-# hate-speech-and-offensive-language
+# Automated Hate Speech Detection and the Problem of Offensive Language
 Repository for Thomas Davidson, Dana Warmsley, Michael Macy, and Ingmar Weber. 2017. "Automated Hate Speech Detection and the Problem of Offensive Language." ICWSM. You can find the pre-print [here](https://arxiv.org/abs/1703.04009).
 
 ***WARNING: The data, lexicons, and notebooks all contain content that is racist, sexist, homophobic, and offensive in many other ways.***
