@@ -203,15 +203,9 @@ def class_to_name(class_label):
         return "No label"
 
 if __name__ == '__main__':
-
     print "Loading data to classify..."
-
-    #Run on labeled data
-    ##Comment out these three lines and un-comment 215-218 to run on Trump tweets
-    ##df = pickle.load(open("../../Data/multiclass_tweets_indexed.p",'rb'))
-    ##tweets = df.text
-    ##print len(list(tweets)), " tweets to classify"
-
+    
+    #Tweets obtained here: https://github.com/sashaperigo/Trump-Tweets
     df = pd.read_csv('trump_tweets.csv')
     tweets = df.Text
     tweets = [x for x in tweets if type(x) == str]
