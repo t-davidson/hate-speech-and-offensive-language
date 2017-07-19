@@ -7,6 +7,7 @@ You can find our labeled data in the `data` directory. We have included them as 
 
 ***Please cite our paper in any published work that uses any of these resources.***
 ~~~
+<<<<<<< HEAD
 @inproceedings{hateoffensive,
   title={Automated Hate Speech Detection and the Problem of Offensive Language},
   author={Davidson, Thomas and Warmsley, Dana and Macy, Michael and Weber, Ingmar},
@@ -14,6 +15,15 @@ You can find our labeled data in the `data` directory. We have included them as 
   series={ICWSM '17},
   year={2017},
   location = {Montreal, Canada}
+=======
+@inproceedings{hateoffensive, 
+  title={Automated Hate Speech Detection and the Problem of Offensive Language}, 
+  author={Davidson, Thomas and Warmsley, Dana and Macy, Michael and Weber, Ingmar}, 
+  booktitle={Proceedings of the 11th International AAAI Conference on Web and Social Media}, 
+  series={ICWSM '17}, 
+  year={2017}, 
+  location = {Montreal, Canada} 
+>>>>>>> 532f26b5d8060ee4378dca37effc2195b11095e4
   }
 ~~~
 
