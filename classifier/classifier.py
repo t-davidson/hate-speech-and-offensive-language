@@ -53,8 +53,8 @@ def preprocess(text_string):
         '[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+')
     mention_regex = '@[\w\-]+'
     parsed_text = re.sub(space_pattern, ' ', text_string)
-    parsed_text = re.sub(giant_url_regex, '', parsed_text)
-    parsed_text = re.sub(mention_regex, '', parsed_text)
+    parsed_text = re.sub(giant_url_regex, 'URLHERE', parsed_text)
+    parsed_text = re.sub(mention_regex, 'MENTIONHERE', parsed_text)
     #parsed_text = parsed_text.code("utf-8", errors='ignore')
     return parsed_text
 
