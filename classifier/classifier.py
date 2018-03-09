@@ -202,15 +202,24 @@ def class_to_name(class_label):
     else:
         return "No label"
 
-if __name__ == '__main__':
-    print "Loading data to classify..."
-    
-    #Tweets obtained here: https://github.com/sashaperigo/Trump-Tweets
-    df = pd.read_csv('trump_tweets.csv')
-    tweets = df.Text
-    tweets = [x for x in tweets if type(x) == str]
+def get_tweets_predictions(tweets, perform_prints=True):
+    fixed_tweets = []
+    for i, t_orig in enumerate(tweets):
+        s = t_orig
+        try:
+            s = s.encode("latin1")
+        except:
+            try:
+                s = s.encode("utf-8")
+            except:
+                pass
+        if type(s) != unicode:
+            fixed_tweets.append(unicode(s, errors="ignore"))
+        else:
+            fixed_tweets.append(s)
+    assert len(tweets) == len(fixed_tweets), "shouldn't remove any tweets"
+    tweets = fixed_tweets
     print len(tweets), " tweets to classify"
-
 
     print "Loading trained classifier... "
     model = joblib.load('final_model.pkl')
@@ -227,9 +236,36 @@ if __name__ == '__main__':
     X = transform_inputs(tweets, tf_vectorizer, idf_vector, pos_vectorizer)
 
     print "Running classification model..."
-    y = predictions(X, model)
+    predicted_class = predictions(X, model)
+
+    return predicted_class
+
+
+if __name__ == '__main__':
+    print "Loading data to classify..."
+
+    #Tweets obtained here: https://github.com/sashaperigo/Trump-Tweets
+
+    df = pd.read_csv('trump_tweets.csv')
+    trump_tweets = df.Text
+    trump_tweets = [x for x in trump_tweets if type(x) == str]
+    trump_predictions = get_tweets_predictions(trump_tweets)
 
     print "Printing predicted values: "
-    for i,t in enumerate(tweets):
+    for i,t in enumerate(trump_tweets):
         print t
-        print class_to_name(y[i])
+        print class_to_name(trump_predictions[i])
+
+    print "Calculate accuracy on labeled data"
+    df = pd.read_csv('../data/labeled_data.csv')
+    tweets = df['tweet'].values
+    tweets = [x for x in tweets if type(x) == str]
+    tweets_class = df['class'].values
+    predictions = get_tweets_predictions(tweets)
+    right_count = 0
+    for i,t in enumerate(tweets):
+        if tweets_class[i] == predictions[i]:
+            right_count += 1
+
+    accuracy = right_count / float(len(df))
+    print "accuracy", accuracy
