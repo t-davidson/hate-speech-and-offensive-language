@@ -1,0 +1,120 @@
+---
+title: "Analysis of Frequent Hate Speech Words on Twitter"
+author: "William McCullen"
+date: "`r lubridate::today()`"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(tidytext)
+library(ggtext)
+library(textdata)
+library(here)
+library(widyr)
+library(ggraph)
+```
+
+```{r}
+# Get the data
+iredit <- read_csv(file = here("data", "labeled_data.csv"))
+iredit_orig <- iredit
+# Split dataset into separate words
+iredit <- iredit %>%
+  unnest_tokens(word, tweet) %>%
+  ungroup()
+# Get rid of some words that we don't want
+iredit <- iredit%>%
+  filter(!str_detect(word, "^[0-9]*$")) %>%
+  filter(!str_detect(word, "rt")) %>%
+  filter(!str_detect(word, "t.co")) %>%
+  filter(!str_detect(word, "http")) %>%
+  filter(!str_detect(word, "amp")) %>%
+  anti_join(stop_words) %>%
+  count(word, sort = TRUE) %>%
+  top_n(15)
+# Create a bar plot
+iredit %>%
+  ggplot(aes(x = reorder(word, n), y = n)) +
+  geom_col(color = "red") +
+  scale_x_reordered() +
+  labs(
+    title = "Most Frequent Words in Hate Speech on Twitter",
+    x = "Words",
+    y = "Count"
+  ) +
+  coord_flip()
+
+# Rank words by sentiment
+iredit_sentiments <- iredit %>%
+  # join with the sentiment dictionary
+  inner_join(get_sentiments(lexicon = "afinn")) %>%
+  # create row id and cumulative sentiment over the entire corpus
+  mutate(cum_sent = cumsum(value),
+         id = row_number())
+
+# Create a bar plot based on sentiment
+iredit_sentiments %>%
+  group_by(word) %>%
+  summarize(n = mean(value)) %>%
+  ggplot(aes(x = reorder(word, n), y = n), fill = n) +
+  geom_col(color = "blue") +
+  scale_x_reordered() +
+  labs(
+    title = "Most Frequent Hate Speech Based on Sentiment",
+    subtitle = "By word",
+    x = "Words",
+    y = "Average Sentiment",
+    fill = "Average/nsentiment"
+  ) +
+  coord_flip()
+iredit_sentiments
+
+# Create a pointrange plot by sentiment
+iredit_sentiments %>%
+  # calculate average sentiment by character with standard error
+  group_by(word) %>%
+  summarize(n = mean(value),
+            se = sd(value) / n()) %>%
+  # generate plot sorted from positive to negative
+  ggplot(aes(x = reorder(word, n), y = n), fill = n) +
+  geom_pointrange(aes(
+    ymin = n - 2,
+    ymax = n + 2
+  ), color = "purple") +
+  #geom_col(color = "blue") +
+  scale_x_reordered() +
+  labs(
+    title = "Most Frequent Hate Speech Based on Sentiment",
+    subtitle = "By word",
+    x = "Words",
+    y = "Average Sentiment",
+    fill = "Average/nsentiment"
+  ) +
+  coord_flip()
+
+# calculate all pairs of words
+iredit_pair <- iredit_orig %>%
+  unnest_tokens(output = word, input = tweet, token = "ngrams", n = 2) %>%
+  separate(col = word, into = c("word1", "word2"), sep = " ") %>%
+  filter(!word1 %in% get_stopwords(source = "smart")$word,
+         !word2 %in% get_stopwords(source = "smart")$word) %>%
+  drop_na(word1, word2) %>%
+  count(word1, word2, sort = TRUE)
+
+# filter for only relatively common combinations
+bigram_graph <- iredit_pair %>%
+  filter(n > 3) %>%
+  igraph::graph_from_data_frame()
+
+# draw a network graph
+set.seed(1776)
+ggraph(bigram_graph, layout = "fr") +
+  geom_edge_link(aes(edge_alpha = n, edge_width = n), show.legend = FALSE, alpha = .5) +
+  geom_node_point(color = "#0052A5", size = 3, alpha = .5) +
+  geom_node_text(aes(label = name), vjust = 1.5) +
+  ggtitle("Word Network in Offensive Tweets") +
+  theme_void() +
+  theme(plot.title = element_markdown())
+```

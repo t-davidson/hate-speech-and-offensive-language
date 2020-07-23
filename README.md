@@ -1,3 +1,5 @@
+# In this project, I analyze the the words used in offensive tweets through the use of multiple graphs. I start off my finding the most commonly used words, and I finally end up with the most common words found in pairs in my last graph.
+
 # Automated Hate Speech Detection and the Problem of Offensive Language
 Repository for Thomas Davidson, Dana Warmsley, Michael Macy, and Ingmar Weber. 2017. "Automated Hate Speech Detection and the Problem of Offensive Language." ICWSM. You read the paper [here](https://aaai.org/ocs/index.php/ICWSM/ICWSM17/paper/view/15665).
 
