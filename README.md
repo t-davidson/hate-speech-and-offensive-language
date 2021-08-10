@@ -2,7 +2,7 @@
 Repository for Thomas Davidson, Dana Warmsley, Michael Macy, and Ingmar Weber. 2017. "Automated Hate Speech Detection and the Problem of Offensive Language." ICWSM. You read the paper [here](https://aaai.org/ocs/index.php/ICWSM/ICWSM17/paper/view/15665).
 
 
-# NOTE: This repository is no longer actively maintained. Please do not post issues regarding the compatibility of the existing code with new versions of Python or the packages used. I will not accept any pull requests. If you plan to use this data or code in your research, please review the closed issues, as several Github users have suggested changes or improvements ton the codebase.
+# NOTE: This repository is no longer actively maintained. Please do not post issues regarding the compatibility of the existing code with new versions of Python or the packages used. I will not accept any pull requests. If you plan to use this data or code in your research, please review the [issues](https://github.com/t-davidson/hate-speech-and-offensive-language/issues), as several Github users have suggested changes or improvements to the codebase.
 
 ## 2019 NEWS
 We have a new paper on racial bias in this dataset and others, you can read it [here](https://arxiv.org/abs/1905.12516)
